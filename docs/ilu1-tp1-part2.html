@@ -1,0 +1,117 @@
+<link rel="stylesheet" type="text/css" href="css/learnocaml_common.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_tryocaml.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_exercise.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_report.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_standalone_description.css">
+
+<br>
+
+<!--  -->
+
+<h1 id="UPS-Lic-Info-ILU1-OCaml-TP1-2-2">UPS - Lic.Info - ILU1.OCaml - TP1 - §2/2</h1>
+<h2 id="Fonctions-n-uplets-et-typage-fort">Fonctions, <em>n</em>-uplets, et typage fort ! </h2>
+<h3 id="Exercice-1-Stdlib-arith">Exercice 1 (Stdlib + arith)</h3>
+<p>Définir deux fonctions travaillant avec les entiers :</p>
+<ol>
+    <li>
+        <p>
+            <code>multiple_of</code> prenant deux entiers <code>n</code> and <code>d</code>, et déterminant si <code>n</code> est un multiple of <code>d</code>. <br />
+            <em>La fonction doit renvoyer un booléen.</em>
+            <br /> Cette fonction peut et doit être écrite <strong>sans récursion</strong>, à l&#39;aide de l&#39;opérateur <code>( mod )</code>.
+        </p>
+    </li>
+    <li>
+        <p>
+            <code>integer_square_root</code> calculant la racine carré entière d&#39;un entier positif <code>n</code>, i.e., le plus large entier <code>r</code> tel que <code>r * r &lt;= n</code>.
+        </p>
+    </li>
+</ol>
+<blockquote>
+    <p>
+        <strong>Indication 1 :</strong> votre algorithme peut utiliser l&#39;arithmétique à virgule flottante, mais n&#39;oubliez pas que vous devez convertir explicitement entre <code>float</code> et <code>int</code> (OCaml a un typage fort, i.e., pas de conversion de type implicite).
+    </p>
+    <p>
+        <strong>Indication 2 :</strong> Consultez la page <a href="https://v2.ocaml.org/api/Stdlib.html" target="_blank" rel="noopener noreferrer">https://v2.ocaml.org/api/Stdlib.html</a> et/ou le moteur de recherche <a href="https://v2.ocaml.org/api/" target="_blank" rel="noopener noreferrer">https://v2.ocaml.org/api/</a> pour trouver des fonctions dans la bibliothèque standard d&#39;OCaml.
+    </p>
+</blockquote>
+<h3 id="Exercice-2-Stdlib-string">Exercice 2 (Stdlib + <code>string</code>) </h3>
+<p>Définir deux fonctions travaillant avec des chaînes de caractères :</p>
+<ol>
+    <li>
+        <p>
+            <code>last_character</code> qui retourne le dernier caractère d&#39;une chaîne de caractères, en supposant, sans le vérifier, que son argument chaîne n&#39;est pas vide.
+        </p>
+    </li>
+    <li>
+        <p>
+            <code>string_of_bool</code> qui convertit une valeur booléenne en sa représentation de type <code>string</code>.
+        </p>
+    </li>
+</ol>
+<h3 id="Exercice-3-Quadruplets-2-2-distincts">Exercice 3 (Quadruplets 2 à 2 distincts)</h3>
+<p>Définir la fonction <code>pairwise_distinct : &#39;a * &#39;a * &#39;a * &#39;a -&gt; bool</code> renvoyant <code>true</code> si les 4 composantes de son argument sont 2 à 2 distincts. </p>
+<p>
+    <strong>Question à faire valider</strong> par votre encadrant : cette fonction est-elle polymorphe ? qu&#39;est-ce que cela signifie ?
+</p>
+<h3 id="Exercice-4-Interm-de-autour-de-la-synth-se-de-type">Exercice 4 (Intermède : autour de la synthèse de type)</h3>
+<p>Assurez-vous que vous savez intuiter le résultat de l&#39;évaluation de l&#39;interprète OCaml sur chacune des 9 expressions ci-dessous.</p>
+<p>Contrôler vos réponses en utilisant la zone de texte de l&#39;onglet <em>Toplevel</em>. </p>
+<pre>
+	<code># (1,false) ;;
+- : int * bool = (1, false)
+
+# (2., 1 + 4, 1 = 1, &quot;salut&quot;) ;;
+…?
+
+# ((&#39;a&#39;, 1), (&#39;b&#39;, 2), (&#39;c&#39;, 3)) ;;
+…?
+
+# (1, 2, 3) ;;
+…?
+
+# (1, (2, 3)) ;;
+…?
+
+# ((1, 2), 3) ;;
+…?
+
+# (1, 2, 3) = (2, 1, 3) ;;
+…?
+
+# (1, (2, 3)) = (1, 2, 3) ;;
+…?
+
+# fun x f -&gt; f x ;;
+…?</code>
+</pre>
+<h3 id="Exercice-5-Plus-dur-autour-de-la-synth-se-d-39-expression">Exercice 5 (Plus dur : autour de la synthèse d&#39;expression)</h3>
+<p>Écrivez des expressions ayant exactement le type spécifié ci-dessous :</p>
+<ul>
+    <li>
+        <code>e1 : (int * bool) * int</code>
+    </li>
+    <li>
+        <code>e2 : (&#39;a -&gt; &#39;a) * char</code>
+    </li>
+</ul>
+<p>Écrivez des fonctions ayant exactement le type spécifié ci-dessous (&quot;sans tricher&quot;, c&#39;est-à-dire sans utiliser d&#39;annotation de type) :</p>
+<ul>
+    <li>
+        <code>f1 : int -&gt; bool -&gt; (int * bool)</code>
+    </li>
+    <li>
+        <code>f2 : &#39;a -&gt; bool</code>
+    </li>
+    <li>
+        <code>f3 : &#39;a -&gt; &#39;a -&gt; int</code>
+    </li>
+    <li>
+        <code>f4 : &#39;a * &#39;b -&gt; &#39;b * &#39;a</code>
+    </li>
+    <li>
+        <code>f5 : (&#39;a -&gt; &#39;b) -&gt; (&#39;a -&gt; &#39;b -&gt; &#39;c) -&gt; &#39;a -&gt; &#39;c</code>
+    </li>
+    <li>
+        <code>f6 : (&#39;a -&gt; &#39;b) * (&#39;a * &#39;b -&gt; &#39;c) * &#39;a -&gt; &#39;c</code>
+    </li>
+</ul>

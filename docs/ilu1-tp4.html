@@ -1,0 +1,133 @@
+<link rel="stylesheet" type="text/css" href="css/learnocaml_common.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_tryocaml.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_exercise.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_report.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_standalone_description.css">
+
+<br>
+
+<!--  -->
+
+<h1 id="TP4-Fonctions-r-cursives-et-listes">TP4 - Fonctions récursives et listes</h1>
+<p>N&#39;hésitez pas à solliciter votre encadrant pour toute question durant la séance, en cas de doute, ou pour lui demander une <strong>revue de votre code</strong>. </p>
+<p>(Alternativement, vous pouvez aussi cliquer <strong>sur le bouton <code>Noter!</code>
+    </strong> (qui ressemble au bouton <code>Sync</code> mais envoie sur la plateforme Learn-OCaml votre code + le résultat des tests) et demander à votre encadrant qu&#39;il relise votre code dans le dashboard enseignant.) </p>
+<h2 id="Rappels-sur-les-listes">Rappels sur les listes</h2>
+<p>On rappelle que :</p>
+<ul>
+    <li>le type des listes d&#39;éléments de type <code>&#39;e</code> s&#39;écrit <code>&#39;e list</code>
+    </li>
+    <li>les listes sont construites <em>via</em> les constructeurs <code>[]</code> (liste vide) et <code>e :: l</code> (empilement d&#39;un élément <code>e</code> devant une liste donnée <code>l</code>) </li>
+    <li>les listes peuvent être parcourues en utilisant la récursion et le filtrage, typiquement : <br />
+        <code> let rec fonction liste = match liste with | [] -&gt; … | e :: l -&gt; … </code>
+    </li>
+    <li>vous avez (re)défini en cours la fonction <code>&quot;append&quot;</code> permettant de concaténer deux listes : <br /> cette fonction existe dans la bibliothèque standard sous la forme de l&#39;opérateur infixe <a href="https://github.com/ocaml/ocaml/blob/4.14/stdlib/stdlib.ml#L298-L303" target="_blank" rel="noopener noreferrer">
+            <code>( @ )</code>
+        </a> (ou encore de la fonction <a href="https://github.com/ocaml/ocaml/blob/4.14/stdlib/list.ml#L53" target="_blank" rel="noopener noreferrer">
+            <code>List.append</code>
+        </a>). </li>
+</ul>
+<h2 id="Listes-et-r-cursion">Listes et récursion</h2>
+<h3 id="Exercice-A-Tours-de-Hano">Exercice A - Tours de Hanoï</h3>
+<p>Le problème des tours de Hanoï est un jeu de réflexion imaginé par le mathématicien français Édouard Lucas. C&#39;est un très bon exemple pour illustrer l&#39;expressivité de la récursivité (s&#39;agissant ici, de la récursivité sur les entiers : les listes ne seront utilisées qu&#39;en résultat).</p>
+<p>Le but du jeu est de déplacer des disques de diamètres différents d&#39;une tour de départ (Tour 1) à une tour de destination (Tour 3) en passant par une tour intermédiaire (Tour 2).</p>
+<p>
+    <img src='https://martin-dorel.org/images/pfitaxel/Tower_of_Hanoi.jpg' alt='Image Tower_of_Hanoi' />
+</p>
+<p>Les règles de jeu sont les suivantes :</p>
+<ul>
+    <li>Ne déplacer qu&#39;un disque à la fois.</li>
+    <li>Un disque ne peut être déplacé que si l&#39;emplacement est vide ou si le disque de réception est plus grand.</li>
+</ul>
+<p>
+    <strong>1*.</strong> En raisonnant de manière récursive, écrire la fonction <code>hanoi</code> qui prend en argument un triplet <code>(source, temp, dest)</code> de 3 paramètres supposés différents (qui identifient les tours) ainsi que le nombre <code>n</code> de disques, et renvoie la liste des mouvements définis par des couples
+</p>
+<pre>
+	<code>(identifiant de la tour de départ, identifiant de la tour d’arrivée).</code>
+</pre>
+<p>Votre fonction devra avoir le type</p>
+<pre>
+	<code>hanoi : &#39;a * &#39;a * &#39;a -&gt; int -&gt; (&#39;a * &#39;a) list</code>
+</pre>
+<p>
+    <em>Indication :</em> Voici le résultat de <code>hanoi</code> sur un exemple :
+</p>
+<pre>
+	<code>hanoi (1,2,3) 2 = [(1, 2); (1, 3); (2, 3)]</code>
+</pre>
+<p>En cas d&#39;argument <code>n</code> non valide (p.ex. <code>hanoi (1,2,3) (-1)</code>), votre fonction devra juste renvoyer la <strong>liste vide</strong>. </p>
+<p>
+    <strong>2*.</strong> Quelle est la longueur de la liste <code>(hanoi (a, b, c) n)</code> en fonction de n ? ( <em>Réponse à faire valider par votre encadrant.</em>)
+</p>
+<h3 id="Exercice-B-fonctions-usuelles-sur-les-listes">Exercice B : fonctions usuelles sur les listes</h3>
+<p>
+    <strong>1.</strong> Écrire la fonction <code>map : (&#39;a -&gt; &#39;b) -&gt; &#39;a list -&gt; &#39;b list</code>, <br />qui prend en argument une fonction et une liste, et renvoie la liste résultant de l&#39;application de la fonction à chaque élément <br />(en préservant l&#39;ordre des éléments dans la liste résultat).
+</p>
+<p>
+    <strong>2*.</strong> Quelle est la longueur de la liste <code>(map f l)</code> en fonction de la longueur de <code>l</code> ? ( <em>Réponse à faire valider par votre encadrant.</em>)
+</p>
+<p>
+    <strong>3*.</strong> En Cours/TD, vous avez pu implémenter les fonctions <code>filtrer</code>, <code>qquesoit</code>, <code>existe</code>.
+</p>
+<p>Ces fonctions pré-existent dans la bibliothèque standard, avec un nom anglais :</p>
+<pre>
+	<code>List.filter : (&#39;a -&gt; bool) -&gt; &#39;a list -&gt; &#39;a list
+List.for_all : (&#39;a -&gt; bool) -&gt; &#39;a list -&gt; bool
+List.exists : (&#39;a -&gt; bool) -&gt; &#39;a list -&gt; bool</code>
+</pre>
+<p>Tester un minimum l&#39;utilisation de ces trois fonctions dans le <em>toplevel</em>, en utilisant par exemple la liste : </p>
+<pre>
+	<code>let ltest = [1; 2; 0; 4; -1; 5; 2]</code>
+</pre>
+<p>et les prédicats :</p>
+<pre>
+	<code>(fun n -&gt; n mod 2 = 0),
+(fun n -&gt; n &gt; -2)</code>
+</pre>
+<h3 id="Exercice-C-Tris">Exercice C - Tris</h3>
+<p>Dans cet exercice deux algorithmes de tri sont a réaliser. Le tri doit être croissant et porte sur une liste de valeurs de type <code>&#39;a</code>. </p>
+<p>
+    <strong>1)</strong>
+    <em>Tri par insertion :</em> Écrire la fonction <code>inserer</code> qui, étant donné une valeur et une liste déjà triée, construit la liste où la valeur est insérée en bonne position dans la liste. En déduire une fonction <code>triInsertion</code> qui trie une liste de valeurs dans l’ordre croissant.
+</p>
+<p>
+    <strong>2)</strong>
+    <em>Tri par fusion :</em> Écrire la fonction <code>partage</code> qui partage une liste en deux listes <code>l1</code> et <code>l2</code> telles que les tailles de <code>l1</code> et <code>l2</code> ne diffèrent que d’un au maximum. Écrire une fonction <code>merge</code> qui prend en argument deux listes ordonnées de valeurs et renvoie une liste ordonnée (vous ne devrez pas utiliser la fonction <code>inserer</code> pour cette fonction). En déduire une fonction <code>triFusion</code> qui trie une liste de valeurs dans l’ordre croissant.
+</p>
+<h3 id="Exercice-D-Repr-sentation-d-une-fonction-unaire">Exercice D - Représentation d’une fonction unaire</h3>
+<p>On considère des fonctions unaires qui sont représentées uniquement sur un domaine fini, par une liste de couples donnant pour chaque valeur de <code>x</code> (dans ce domaine fini) son image par la fonction. </p>
+<p>Par exemple, la fonction <code>f</code> sur l’intervalle <code>[1,5]</code> t.q. <code>f(x) = 2x + 1</code> est représentée par la liste de couples : </p>
+<pre>
+	<code>[(1,3) ; (2,5) ; (3,7) ; (4,9) ; (5,11)]</code>
+</pre>
+<p>Notez que l&#39; <strong>ordre des couples dans une telle liste est indifférent</strong> car la notion mathématique sous-jacente est juste un <em>ensemble de couples</em> (donc les listes considérées ne seront pas forcément &quot;triées&quot; dans cet exercice). </p>
+<p>Notez également que, pour representer correctement une fonction, les premiers éléments des couples, doivent être tous différents.</p>
+<p>
+    <strong>0)</strong> Écrire les fonctions <code>fst</code> et <code>snd</code> renvoyant la première composante (resp. la seconde composante) d&#39;un couple.
+</p>
+<p>
+    <strong>1)</strong> Écrire une fonction <code>estFonction</code> qui, étant donnée une liste de couples, vérifie que la liste des premiers éléments ne contient pas de duplication.
+</p>
+<p>On suppose maintenant qu’on a bien des fonctions.</p>
+<p>
+    <strong>2)</strong> Écrire la fonction <code>image</code> qui, étant donnés un élément et une liste de couples (représentant <code>f</code>) renvoie la valeur associée à l’élément si elle existe. Une exception sera levée avec <code>failwith</code> si l&#39;élément n&#39;a pas d&#39;image.
+</p>
+<p>
+    <strong>3)</strong> Écrire la fonction <code>imageEns</code> qui, étant données une liste d’éléments <code>l</code> et une liste de couples (représentant une fonction <code>f</code>) renvoie la liste des valeurs associées à chaque élément de <code>l</code>. On supposera, sans le vérifier, que les éléments de la liste <code>l</code> sont bien dans le &quot;domaine de définition&quot; de <code>f</code>.
+</p>
+<p>
+    <em>Indication :</em> vous pouvez utiliser la fonction précédente.
+</p>
+<p>
+    <strong>4)</strong> Écrire <code>estInjective</code> qui appliquée à une fonction <code>f</code> représentée par une liste de couples vérifie que deux éléments n’ont pas la même image.
+</p>
+<p>
+    <strong>5)</strong> Écrire la fonction <code>surcharge</code> prenant 2 listes représentant les fonctions <code>f1</code> et <code>f2</code> et renvoyant une liste représentant la fonction <code>f</code> définie sur l’union des domaines de définition de <code>f1</code> et <code>f2</code> et dont l’image d’un élément est donnée soit par <code>f1</code>, soit par <code>f2</code> en donnant priorité à <code>f2</code>.
+</p>
+<p>
+    <strong>6)</strong> Écrire la fonction <code>composition</code> prenant 2 listes représentant les fonctions <code>f1</code> et <code>f2</code> et renvoyant une liste représentant la fonction <code>f</code> dont l’image d’un élément est donnée par <code>f1</code> appliquée à l’image par <code>f2</code> de cet élément. <br />Cette fonction correspond à l&#39;opération de composition de fonctions <code>f1 o f2</code>, et <em>ne devra pas lever d&#39;exception</em> si <code>&quot;f2(x)&quot;</code> n&#39;a pas d&#39;image par la fonction <code>f1</code>. En effet dans ce cas de figure, il n&#39;y a &quot;pas d&#39;erreur&quot; d&#39;un point de vue mathématique : c&#39;est juste que la fonction composée <code>f1 o f2</code> n&#39;est pas définie en <code>x</code>. <br />
+    <strong>Indication :</strong> définir une fonction auxiliaire <code>isDef</code> indiquant si un élément <code>x</code> possède une image par une fonction <code>f</code>.
+</p>
+<p>
+    <strong>7)</strong> Écrire la fonction <code>produit</code> prenant en argument deux listes représentant deux fonctions <code>f1</code> et <code>f2</code> et renvoyant la liste représentant la fonction qui à un couple <code>(x,y)</code> associe le couple <code>(f1 x, f2 y)</code>.
+</p>

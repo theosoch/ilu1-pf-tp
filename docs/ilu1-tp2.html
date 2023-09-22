@@ -1,0 +1,86 @@
+<link rel="stylesheet" type="text/css" href="css/learnocaml_common.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_tryocaml.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_exercise.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_report.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_standalone_description.css">
+
+<br>
+
+<!--  -->
+
+<h1 id="UPS-Lic-Info-ILU1-OCaml-TP2-Filtrage-par-motifs">UPS - Lic.Info - ILU1.OCaml - TP2 - Filtrage par motifs</h1>
+<blockquote>
+    <p>
+        <strong>Remarque générale</strong> ( <em>valable pour tous vos prochains TP dans l&#39;UE et au-delà</em>) : <strong>ce n&#39;est pas parce que tous les tests automatisés fournis passent que votre implémentation est forcément correcte, algorithmiquement optimale, ou suffisamment lisible :)</strong> D&#39;où les trois recommandations suivantes :
+    </p>
+</blockquote>
+<ol>
+    <li>
+        <p>Implémenter vos fonctions de manière &quot;incrémentale&quot;, en testant des petites unités de code (par exemple avec le <em>Toplevel</em>) au fur et à mesure que vous écrivez vos fonctions, plutôt que de coder 24 lignes d&#39;un coup à déboguer ensuite ! </p>
+    </li>
+    <li>
+        <p>Ne pas hésiter à &quot;refactoriser&quot; ensuite votre code pour le simplifier, découper… ou plus généralement le rendre plus lisible.</p>
+    </li>
+    <li>
+        <p>Solliciter votre encadrant de TP en cas de question, ou pour valider certains aspects de votre code (lisibilité et extensibilité/maintenabilité)</p>
+    </li>
+</ol>
+<h2 id="Exercice-1-Fonctions-par-cas-r-vision-du-Cours-TD">Exercice 1 - Fonctions par cas (révision du Cours-TD)</h2>
+<p>
+    <strong>1a)</strong> Écrire la fonction <code>estZero_v1</code> qui retourne <code>&quot;zero&quot;</code> si son argument est <code>0</code> (en utilisant un filtrage, mais en n&#39;effectuant pas de tests supplémentaires).
+</p>
+<p>Que se passe-t-il si l&#39;on applique la fonction <code>estZero_v1</code> à <code>2022</code> ? </p>
+<p>Pour expérimenter cela, vous pouvez évaluer votre code et utiliser l&#39;onglet <em>Toplevel</em> de l&#39;environnement learn-ocaml. </p>
+<p>
+    <strong>Remarque :</strong> après chaque clic sur <code>Compiler</code>, le warning généré par le code de cette question subsistera pendant le reste du TP (ce qui est fait exprès ici !). D&#39;autre part, notez que le texte des warnings (ou des erreurs de syntaxe/typage) apparaît dans l&#39;éditeur si l&#39;on survole le numéro des lignes en question avec la souris.
+</p>
+<p>
+    <strong>1b)</strong> Écrire la fonction <code>estZero_v2</code> qui reprend et complète le code précédent et renvoie <code>&quot;nonZero&quot;</code> pour tout autre argument que <code>0</code>.
+</p>
+<p>
+    <strong>2)</strong> Écrire la fonction <code>voyelle</code> qui indique par un booléen si un caractère est une voyelle (minuscule) ou pas. <br />Concernant le code à écrire, vous vous efforcerez d&#39;obtenir une implantation la plus concise et lisible possible.
+</p>
+<h2 id="Exercice-2-Fonctions-manipulant-des-dates">Exercice 2 - Fonctions manipulant des dates</h2>
+<p>On représente les jours de la semaine par les chaînes de caractères <code>&quot;lundi&quot;</code>, <code>&quot;mardi&quot;</code>, <code>&quot;dimanche&quot;</code>, etc. </p>
+<p>
+    <strong>1)</strong> Écrire la fonction <code>rang</code> qui prend en argument un jour de semaine et retourne son rang dans la semaine (lundi est le jour de rang 1 et dimanche est de rang 7 dans la semaine). La fonction est partielle et on peut la compléter en associant l’entier 0 à un jour inconnu :
+</p>
+<pre>
+	<code>rang &quot;jeudi&quot; =&gt; 4
+rang &quot;monday&quot; =&gt; 0</code>
+</pre>
+<p>
+    <strong>2)</strong> Écrire la fonction <code>inf</code> prenant en arguments 2 jours et retournant <code>true</code> si et seulement si le premier jour est la veille du deuxième. Les jours étant ici représentés par de simples chaînes de caractères, votre fonction <code>inf</code> devra retourner <code>false</code> en cas de jour non valide.
+</p>
+<p>
+    <strong>Conseil :</strong> pour cette fonction, nous vous proposons d&#39;utiliser un filtrage simultané (cf. diapositive 13/16 du <a href="https://erikmd.github.io/Supports-ILU1-ILU3-PF-2022-2023/Info2.ILU1/ilu1_ocaml_ctd2.pdf" target="_blank" rel="noopener noreferrer">CTD2</a>), en utilisant aussi la fonction <code>rang</code> (mais il y a plusieurs autres implémentations possibles !-)
+</p>
+<p>
+    <strong>3)</strong> Écrire la fonction <code>jsem</code> qui prend en argument un entier de l’intervalle <code>[1..7]</code> et retourne la chaîne de caractères représentant le jour de la semaine correspondant. Si l’entier est incorrect la fonction retourne la chaîne <code>&quot;jour inconnu&quot;</code> :
+</p>
+<pre>
+	<code>jsem 4 =&gt; &quot;jeudi&quot;
+jsem 0 =&gt; &quot;jour inconnu&quot;</code>
+</pre>
+<p>
+    <strong>4)</strong> On veut écrire plusieurs versions de la fonction <code>jourSucc</code> qui prend en argument un jour de semaine et retourne son successeur dans la semaine : le successeur de lundi est mardi, celui de dimanche est lundi (en renvoyant <code>&quot;jour inconnu&quot;</code> en cas d&#39;erreur) :
+</p>
+<ul>
+    <li>1ère version <code>jourSucc1</code> en utilisant uniquement le filtrage ; </li>
+    <li>2ème version <code>jourSucc2</code> en utilisant les fonctions <code>jsem</code>, et <code>rang</code>, sans utiliser <code>mod</code> et sans filtrage (mais <code>if-then-else</code> autorisés). On choisira une version qui évite de calculer 2 fois la même expression ; </li>
+    <li>3ème version <code>jourSucc3</code> en utilisant les fonctions <code>jsem</code>, et <code>rang</code> et l’opérateur prédéfini <code>mod</code> (et un seul <code>if-then-else</code>). </li>
+</ul>
+<blockquote>
+    <p>
+        <strong>Remarque :</strong> même si les tests fonctionnels passent pour ces questions, il se peut que votre version soit sous-optimale ou ne respecte pas pleinement l&#39;énoncé. Faites valider vos réponses par votre encadrant de TP.
+    </p>
+</blockquote>
+<p>
+    <strong>5)</strong> Écrire les 3 mêmes versions <code>jourPred1</code>, <code>jourPred2</code>, <code>jourPred3</code> pour la fonction jourPred retournant le jour précédent d’un jour donné. Vous respecterez les même contraintes que pour <code>jourSucc1</code>, <code>jourSucc2</code> et <code>jourSucc3</code>. On notera que <code>(-1) mod 7 = -1</code>.
+</p>
+<p>
+    <strong>6)</strong> Écrire la fonction <code>bissextile</code> prenant en argument une année et retournant un booléen indiquant si l’année est bissextile ou non. Une année est bissextile si elle est divisible par 4 et si elle n’est pas divisible par 100 à moins qu’elle soit divisible par 400.
+</p>
+<p>
+    <strong>7)</strong> Écrire la fonction <code>nbjour</code> de type <code>int -&gt; int -&gt; int</code>, prenant en argument un numéro de mois (entier entre <code>1</code> et <code>12</code>, on levèra une <em>exception</em> en cas de mois invalide) et une année, et renvoyant le nombre de jours de ce mois dans cette année-là.
+</p>

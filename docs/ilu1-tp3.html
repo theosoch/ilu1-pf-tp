@@ -1,0 +1,107 @@
+<link rel="stylesheet" type="text/css" href="css/learnocaml_common.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_tryocaml.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_exercise.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_report.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_standalone_description.css">
+
+<br>
+
+<!--  -->
+
+<h1 id="TP3-Fonctions-r-cursives-sur-les-entiers">TP3 - Fonctions récursives sur les entiers</h1>
+<p>N&#39;hésitez pas à solliciter votre encadrant pour toute question durant la séance, en cas de doute, ou pour lui demander une <strong>revue de votre code</strong>. </p>
+<p>(Alternativement, vous pouvez aussi cliquer <strong>sur le bouton <code>Noter!</code>
+    </strong> (qui ressemble au bouton <code>Sync</code> mais envoie sur la plateforme Learn-OCaml votre code + le résultat des tests) et demander à votre encadrant qu&#39;il relise votre code dans le dashboard enseignant.) </p>
+<h2 id="Exercice-1-Num-ration-d-cimale">Exercice 1 - Numération décimale</h2>
+<p>On se donne les deux fonctions <code>dernierCh</code> et <code>toutSaufDer</code> qui renvoient respectivement, le dernier chiffre des unités de son argument (en base 10), et le quotient de son argument (divisé par 10). </p>
+<p>Le but de cet exercice est de (re)faire les petites fonctions récursives sur les entiers vues en TD, avec comme contrainte de ne pas utiliser directement <code>mod</code> et <code>/</code>, mais utiliser <code>dernierCh</code> et <code>toutSaufDer</code>. </p>
+<p>Écrire les fonctions suivantes, prenant en argument un entier <code>n &gt;= 0</code> (le cas d&#39;erreur <code>n &lt; 0</code> devra traité être traité à part (une fois) pour lever une exception avec <code>failwith</code> lorsque les nombres fournis sont strictement négatifs) : </p>
+<ol>
+    <li>
+        <code>premierCh</code>, qui renvoie le premier chiffre d&#39;un entier non nul
+    </li>
+    <li>
+        <code>toutSaufPrem</code>, qui renvoie son argument privé de son premier chiffre
+    </li>
+</ol>
+<p>Écrire la fonction suivante, prenant en argument un entier <code>n</code> (en supposant par simplicité qu&#39;il ne contient pas le chiffre 0 dans son écriture décimale) : </p>
+<ul>
+    <li>
+        <code>estPalindrome</code>, qui teste si un entier est un palindrome en base 10, en considérant que <code>estPalindrome n = estPalindrome (- n)</code>
+    </li>
+</ul>
+<p>Écrire la fonction suivante, prenant deux arguments <code>c</code> et <code>n</code> : </p>
+<ul>
+    <li>
+        <code>nbOccs : int -&gt; int -&gt; int</code>, qui compte le nombre d&#39;occurrence d&#39;un chiffre <code>c</code> (entre 0 et 9) dans l&#39;écriture décimale d&#39;un entier <code>n &gt;= 0</code> (supposé sans le vérifier). <br /> Par exemple, <code>nbOccs 0 100 = 2</code>.
+    </li>
+</ul>
+<h2 id="Exercice-2-Fonction-d-39-it-ration">Exercice 2 - Fonction d&#39;itération</h2>
+<p>
+    <strong>1)</strong> Écrire la fonction <code>iterer</code> qui, étant donné un entier <code>n</code>, une fonction unaire <code>f</code> et un argument <code>x</code>, réalise l&#39;application <code>n</code> fois de <code>f</code> (si <code>n = 0</code> le résultat est l&#39;argument <code>x</code>).
+</p>
+<p>Par exemple : <code>iterer 2 (fun x -&gt; x + 10) 3</code> renvoie <code>23</code>. </p>
+<p>
+    <strong>Remarque :</strong> il y a 2 solutions possibles suivant la position de l&#39;appel récursif. Choisir l&#39;une des deux solutions suffit.
+</p>
+<p>
+    <em>Concevons une autre version de iterer en raisonnant à l&#39;ordre supérieur :</em>
+</p>
+<p>
+    <strong>2.1)</strong> Définir la fonction unaire <code>id</code> correspondant à la fonction identité. Vérifier son type.
+</p>
+<p>
+    <strong>2.2)</strong> Définir la fonction <code>compose</code> dont le type est <code>(&#39;a -&gt;&#39;b) -&gt; (&#39;c -&gt; &#39;a) -&gt; &#39;c -&gt; &#39;b</code>.
+</p>
+<p>
+    <strong>2.3)</strong> Écrire, en réutilisant <code>compose</code> et <code>id</code>, la fonction <code>iterer2</code> à 2 arguments (un entier <code>n</code> et une fonction unaire <code>f</code>), renvoyant la fonction réalisant <code>n</code> fois l&#39;application de <code>f</code> ; si <code>n = 0</code>, le résultat est l&#39;identité.
+</p>
+<p>Par exemple, <code>let f = iterer2 4 (fun x -&gt; x + 10) in f 3</code> renvoie <code>43</code>. </p>
+<p>
+    <strong>Remarque :</strong> noter que la seule &quot;différence&quot; entre <code>iterer</code> et <code>iterer2</code> est que l&#39;abstraction &quot; <code>fun x -&gt; …</code>&quot; a été permutée avec le &quot;if-then-else&quot;.
+</p>
+<p>
+    <strong>3)</strong> Écrire la fonction <code>itererBis</code> prenant en argument une fonction unaire <code>f</code>, un prédicat <em>unaire</em>
+    <code>p</code> (c.-à-d. une fonction <em>à un argument</em> renvoyant un booléen) et un argument <code>x</code>, et réitérant l&#39;application de <code>f</code> à <code>x</code> (remplaçant la valeur de <code>x</code> à chaque appel récursif) jusqu&#39;à-ce-que le résultat courant stocké dans <code>x</code> vérifie le prédicat <code>p</code> ; le résultat renvoyé est alors <code>x</code>.
+</p>
+<p>Exemple : prendre la moitié de <code>x</code> jusqu&#39;à obtenir une valeur <code>&lt; 10</code>. </p>
+<pre>
+	<code>itererBis (fun x -&gt; x / 2) (fun x -&gt; x &lt; 10) 45  =  5</code>
+</pre>
+<h2 id="Exercice-3-Fonctions-classiques">Exercice 3 - Fonctions classiques</h2>
+<p>
+    <strong>1)</strong> ( <strong>Commencez par écrire son type, puis</strong>) implémentez la fonction <code>qqsoit</code> prenant en argument un entier <code>n</code> et un prédicat unaire <code>p</code> et renvoyant <code>true</code> ssi tous les éléments de <code>{1, 2, …, n}</code> vérifient le prédicat <code>p</code>.
+</p>
+<p>Dans le cas où <code>n &lt;= 0</code>, votre fonction renverra toujours <code>true</code> (conformément à la définition de l&#39;élément neutre du &quot;ET logique&quot;). </p>
+<p>
+    <strong>2)</strong> Implémenter en OCaml l&#39; <strong>algorithme d&#39;exponentiation rapide</strong>
+    <code>fastpow : int -&gt; int -&gt; int</code> avec les contraintes suivantes :
+</p>
+<ul>
+    <li>
+        <code>fastpow n e</code> calcule l&#39;opération mathématique « n ^ e »
+    </li>
+    <li>Le premier argument (la base) est un entier de signe quelconque</li>
+    <li>Le deuxième argument (l&#39;exposant) est un entier <code>&gt;= 0</code>
+    </li>
+    <li>Une exception sera levée en cas d&#39;argument invalide</li>
+    <li>Les opérations <code>( / )</code> et <code>( mod )</code> sont interdites </li>
+    <li>Les opérations du &quot;ET bit-à-bit&quot; <code>( land )</code> et du &quot;décalage arithmétique vers la droite&quot; <code>( asr )</code> sont autorisées </li>
+</ul>
+<p>Liens utiles :</p>
+<ul>
+    <li>l&#39; <a href="https://fr.wikipedia.org/wiki/Exponentiation_rapide#Algorithme" target="_blank" rel="noopener noreferrer">article de Wikipédia sur l&#39;exponentiation rapide</a>
+    </li>
+    <li>la <a href="https://v2.ocaml.org/api/Stdlib.html#2_Bitwiseoperations" target="_blank" rel="noopener noreferrer">section Bitwise operations du module Stdlib d&#39;OCaml</a>
+    </li>
+</ul>
+<p>
+    <strong>3)</strong> Écrire la fonction d&#39;Ackermann (de façon <em>non curryfiée</em>), définie sur les entiers naturels comme suit :
+</p>
+<pre>
+	<code>ack(m,n) = n + 1                si m = 0 
+ack(m,n) = ack(m-1,1)           si m &gt; 0 et n = 0 
+ack(m,n) = ack(m-1,ack(m,n-1))  si m &gt; 0 et n &gt; 0 </code>
+</pre>
+<p>Dans le cas où <code>m &lt; 0</code> ou <code>n &lt; 0</code>, votre fonction lèvera une exception. </p>
+<p>Attention, la fonction d&#39;Ackermann croît très rapidement... Ainsi <code>ack(4,2)</code> contient 19729 chiffres et dépasse le nombre d&#39;atomes estimé dans l&#39;univers. Éviter de le calculer. </p>
