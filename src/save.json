@@ -11071,7 +11071,7 @@
     },
     "ilu1-tp4": {
       "grade": 100,
-      "solution": "(* Exercice A *)\n\n(* Q.1 *)\n\nlet rec hanoi (source, temp, dest) n =\n  if n <= 0 then []\n  else\n    (hanoi (source, dest, temp) (n-1))\n    @ ( (source, dest) ::(hanoi (temp, source, dest) (n-1)) )\n;;\n\nhanoi (1,2,3) 2 = [(1, 2); (1, 3); (2, 3)] ;;\n\n(* --- *)\n\n(* Q.2 *)\n\n(*\nExplication (pour la séance de TP) :\n\nDans la fonction \"hanoi\", lorsqu'on demande 0 disque,\non obtient logiquement aucun déplacement.\nAinsi, le nombre de coup pour cette tour est de 0.\n\nLorsqu'on demande n disque (avec n > 0 donc), on obtient au moins 1 coup,\nmais aussi les coups renvoyés par les appels récursifs de \"hanoi\".\nAinsi, on obtient :\n  (nb coups à n-1) + 1 + (nb coups à n-1)\nsoit :\n  2 * (nb coups à n-1) + 1\n\n*)\n\nlet rec longueurHanoi n =\n  if n <= 0 then 0\n  else 2 * (longueurHanoi (n-1)) + 1\n;;\n\nlongueurHanoi 2 ;;\n\n(* --- *)\n\n(* Exercice B *)\n\n(* Q.1 *)\n\nlet rec map f l = \n  match l with\n  | [] -> []\n  | e :: tl -> (f e) :: (map f tl)\n;;\n\n(* --- *)\n\n(* Q.2 *)\n\nlet longueurMap f l = List.length l ;;\n\n(* --- *)\n\n(* Q.3 *)\n\nlet ltest = [1; 2; 0; 4; -1; 5; 2] ;;\n\nList.filter (fun n -> n mod 2 = 0) ltest ;;\nList.for_all (fun n -> n mod 2 = 0) ltest ;;\nList.exists (fun n -> n mod 2 = 0) ltest ;;\n\nList.filter (fun n -> n > -2) ltest ;;\nList.for_all (fun n -> n > -2) ltest ;;\nList.exists (fun n -> n > -2) ltest ;;\n\nList.filter (fun x -> x > 2) ltest ;;\nList.for_all (fun x -> x >= 0) ltest ;;\nList.exists (fun x -> x < 0) ltest ;;\nList.exists (fun x -> x >= 0) ltest ;; \n\n(* --- *)\n\n(* Exercice C *)\n\n(* Q.1 *)\n\n(*\nlet rec inserer e l i =\n  match e, l, i with\n  | e, l, i when i < 0 || i > (List.length l) -> failwith \"erreur\"\n  | e, l, i when i = 0 -> e :: l\n  | e, l, i when i > 0 -> List.hd l :: inserer e (List.tl l) (i-1)\n  | e, l, i -> failwith \"erreur\"\n;; \n*)\n\nlet rec inserer e l =\n  match l with\n  | [] -> [e]\n  | x :: tl ->\n      if x > e then e :: l\n      else x :: (inserer e tl)\n;; \n\nlet rec recTriInsertion l sl =\n  match l with\n  | [] -> sl\n  | e :: tl ->\n      recTriInsertion tl (inserer e sl)\n;;\n\nlet triInsertion l = recTriInsertion l [] ;;\n\nltest ;;\ntriInsertion ltest ;; \n\n(* --- *)\n\n(* Q.2 *)\n\nlet rec partage_ l x =\n  match l with\n  | [] ->\n      ([], [], x / 2) \n  | e :: tl ->\n      let (lr, rr, xr) = partage_ tl (x+1) in\n      if xr = 0\n      then (e :: lr, rr, xr)\n      else (lr, e :: rr, xr-1)\n;;\n\nlet partage l = let (lr, rr, xr) = partage_ l 0 in (lr, rr) ;;\n          \n  \nltest ;;\npartage ltest ;;\n\nlet rec merge l1 l2 =\n  match l1, l2 with\n  | [], l2 -> l2\n  | l1, [] -> l1\n  | e1 :: tl1, e2 :: tl2 ->\n      if e1 <= e2\n      then e1 :: merge tl1 l2\n      else e2 :: merge l1 tl2\n;;\n  \nlet ltest_sorted = triInsertion ltest ;;\nlet ltest2 = [ 1; 3; 5; 5; 7; 8 ] ;;\n\nmerge ltest_sorted ltest2 ;;\n\nlet rec triFusion l =\n  match l with\n  | [] -> []\n  | [x] -> [x]\n  | l ->\n      let (pl1, pl2) = partage l in\n      let tl1 = triFusion pl1 and tl2 = triFusion pl2 in\n      merge tl1 tl2\n;; \n\n\n(*\ntriFusion [] ;;\ntriFusion [0] ;;\ntriFusion [7] ;;\ntriFusion [7; 0] ;;\ntriFusion [7; 7] ;;\ntriFusion [1; 7; 7] ;;\ntriFusion [7; 1; 7] ;;\ntriFusion [7; 7; 1] ;;\n\nltest ;; \ntriFusion ltest ;;\n*)      \n\n(* --- *)\n\n(* Exercice D *)\n\n(* Q.0 *)\n\nlet fst c = let (a, b) = c in a ;;\nlet snd c = let (a, b) = c in b ;;\n\nlet ctest = (5, 3) ;;\nfst ctest ;;\nsnd ctest ;;\n\n(* --- *)\n\n(* Q.1 *) \n\nlet rec estFonction lc =\n  match lc with\n  | [] -> true\n  | lc ->\n      let lc_head = List.hd lc and tail_lc = List.tl lc in\n      (\n        List.for_all\n          (\n            fun c -> (fst c) <> (fst lc_head)\n          )\n          tail_lc\n      )\n      && estFonction tail_lc\n;;\n\nlet lftest = [(1,3) ; (2,5) ; (3,7) ; (4,9) ; (5,11)] ;;\n  \nestFonction lftest ;;\nestFonction (lftest @ [(2,4)]) ;;\n\n(* --- *)\n\n(* Q.2 *)\n\nlet rec image x rf =\n  match x, rf with\n  | x, [] -> failwith \"erreur\"\n  | x, rf ->\n      let c = List.hd rf in\n      if (fst c) = x then (snd c) else image x (List.tl rf)\n;;\n\nimage 1 lftest = 3 ;;\nimage 4 lftest = 9 ;;\n\n(* --- *)\n\n(* Q.3 *)\n\nlet rec imageEns l rf =\n  match l, rf with\n  | [], rf -> []\n  | l, rf -> (image (List.hd l) rf) :: (imageEns (List.tl l) rf)\n;;\n\nimageEns [1; 4] lftest ;;\n\n(* --- *)\n\n(* Q.4 *) \n\nlet estInjective rf =\n  List.for_all\n    (\n      fun c1 ->\n        List.for_all (fun c2 -> fst c1 = fst c2 || snd c1 <> snd c2) rf\n    )\n    rf\n;;\n\nestInjective lftest ;;\nestInjective (lftest @ [(6, 5)]) ;;\n\n(* --- *)\n\n(* Q.5 *) \n\nlet rec surcharge rf1 rf2 =\n  (\n    List.filter\n      (fun c1 -> List.for_all (fun c2 -> fst c2 <> fst c1) rf2)\n      rf1\n  ) @ rf2\n;;\n\nlftest ;;\nlet lftest2 = [(5, 20); (6, 0); (7, -5); (0, 0); (1, 7)] ;;\nsurcharge lftest lftest2  ;;\n\n(* --- *)\n\n(* Q.6 *)\n\nlet isDef x rf = List.exists (fun c -> fst c = x) rf ;;\n\nlet composition rf1 rf2 = \n  map\n    (fun (c_x, c_y) -> (c_x, image c_y rf1))\n    (\n      List.filter\n        (fun (c_x, c_y) -> isDef c_y rf1)\n        rf2\n    )\n;;\n\nlftest ;;\nlftest2 ;;\ncomposition lftest2 lftest ;;\ncomposition lftest lftest2 ;; \n\n(* --- *)\n\n(* Q.7 *) \n\nlet rec extraire_couples_antecedants rf1 rf2 =\n  match rf1 with\n  | [] -> []\n  | rf1 ->\n      (map (fun c -> (fst (List.hd rf1), fst c)) rf2)\n      @ (extraire_couples_antecedants (List.tl rf1) rf2)\n;;\n\nlet rec image_couples_antecedants lc rf1 rf2 =\n  match lc with\n  | [] -> []\n  | lc -> \n      let xc = List.hd lc in\n      let x1 = fst xc and x2 = snd xc in\n      (\n        (x1, x2),\n        (image x1 rf1, image x2 rf2)\n      ) :: (image_couples_antecedants (List.tl lc) rf1 rf2)\n;;\n\nlet rec produit rf1 rf2 =\n  image_couples_antecedants\n    (extraire_couples_antecedants rf1 rf2)\n    rf1 rf2\n;;\n\n\nproduit lftest lftest2 ;;\n\n(* --- *)",
+      "solution": "(* Exercice A *)\n\n(* Q.1 *)\n\nlet rec hanoi (source, temp, dest) n =\n  if n <= 0 then []\n  else\n    (hanoi (source, dest, temp) (n-1))\n    @ ( (source, dest) ::(hanoi (temp, source, dest) (n-1)) )\n;;\n\nhanoi (1,2,3) 2 = [(1, 2); (1, 3); (2, 3)] ;;\n\n(* --- *)\n\n(* Q.2 *)\n\n(*\nExplication (pour la séance de TP) :\n\nDans la fonction \"hanoi\", lorsqu'on demande 0 disque,\non obtient logiquement aucun déplacement.\nAinsi, le nombre de coup pour cette tour est de 0.\n\nLorsqu'on demande n disque (avec n > 0 donc), on obtient au moins 1 coup,\nmais aussi les coups renvoyés par les appels récursifs de \"hanoi\".\nAinsi, on obtient :\n  (nb coups à n-1) + 1 + (nb coups à n-1)\nsoit :\n  2 * (nb coups à n-1) + 1\n\n*)\n\nlet rec longueurHanoi n =\n  if n <= 0 then 0\n  else 2 * (longueurHanoi (n-1)) + 1\n;;\n\nlongueurHanoi 2 ;;\n\n(* --- *)\n\n(* Exercice B *)\n\n(* Q.1 *)\n\nlet rec map f l = \n  match l with\n  | [] -> []\n  | e :: tl -> (f e) :: (map f tl)\n;;\n\n(* --- *)\n\n(* Q.2 *)\n\nlet longueurMap f l = List.length l ;;\n\n(* --- *)\n\n(* Q.3 *)\n\nlet ltest = [1; 2; 0; 4; -1; 5; 2] ;;\n\nList.filter (fun n -> n mod 2 = 0) ltest ;;\nList.for_all (fun n -> n mod 2 = 0) ltest ;;\nList.exists (fun n -> n mod 2 = 0) ltest ;;\n\nList.filter (fun n -> n > -2) ltest ;;\nList.for_all (fun n -> n > -2) ltest ;;\nList.exists (fun n -> n > -2) ltest ;;\n\nList.filter (fun x -> x > 2) ltest ;;\nList.for_all (fun x -> x >= 0) ltest ;;\nList.exists (fun x -> x < 0) ltest ;;\nList.exists (fun x -> x >= 0) ltest ;; \n\n(* --- *)\n\n(* Exercice C *)\n\n(* Q.1 *)\n\n(*\nlet rec inserer e l i =\n  match e, l, i with\n  | e, l, i when i < 0 || i > (List.length l) -> failwith \"erreur\"\n  | e, l, i when i = 0 -> e :: l\n  | e, l, i when i > 0 -> List.hd l :: inserer e (List.tl l) (i-1)\n  | e, l, i -> failwith \"erreur\"\n;; \n*)\n\nlet rec inserer e l =\n  match l with\n  | [] -> [e]\n  | x :: tl ->\n      if x > e then e :: l\n      else x :: (inserer e tl)\n;; \n\nlet rec recTriInsertion l sl =\n  match l with\n  | [] -> sl\n  | e :: tl ->\n      recTriInsertion tl (inserer e sl)\n;;\n\nlet triInsertion l = recTriInsertion l [] ;;\n\nltest ;;\ntriInsertion ltest ;; \n\n(* --- *)\n\n(* Q.2 *)\n\nlet rec partage_ l x =\n  match l with\n  | [] ->\n      ([], [], x / 2) \n  | e :: tl ->\n      let (lr, rr, xr) = partage_ tl (x+1) in\n      if xr = 0\n      then (e :: lr, rr, xr)\n      else (lr, e :: rr, xr-1)\n;;\n\nlet partage l = let (lr, rr, xr) = partage_ l 0 in (lr, rr) ;;\n          \n  \nltest ;;\npartage ltest ;;\n\nlet rec merge l1 l2 =\n  match l1, l2 with\n  | [], l2 -> l2\n  | l1, [] -> l1\n  | e1 :: tl1, e2 :: tl2 ->\n      if e1 <= e2\n      then e1 :: merge tl1 l2\n      else e2 :: merge l1 tl2\n;;\n  \nlet ltest_sorted = triInsertion ltest ;;\nlet ltest2 = [ 1; 3; 5; 5; 7; 8 ] ;;\n\nmerge ltest_sorted ltest2 ;;\n\nlet rec triFusion l =\n  match l with\n  | [] -> []\n  | [x] -> [x]\n  | l ->\n      let (pl1, pl2) = partage l in\n      let tl1 = triFusion pl1 and tl2 = triFusion pl2 in\n      merge tl1 tl2\n;; \n\n\n(*\ntriFusion [] ;;\ntriFusion [0] ;;\ntriFusion [7] ;;\ntriFusion [7; 0] ;;\ntriFusion [7; 7] ;;\ntriFusion [1; 7; 7] ;;\ntriFusion [7; 1; 7] ;;\ntriFusion [7; 7; 1] ;;\n\nltest ;; \ntriFusion ltest ;;\n*)      \n\n(* --- *)\n\n(* Exercice D *)\n\n(* Q.0 *)\n\nlet fst c = let (a, b) = c in a ;;\nlet snd c = let (a, b) = c in b ;;\n\nlet ctest = (5, 3) ;;\nfst ctest ;;\nsnd ctest ;;\n\n(* --- *)\n\n(* Q.1 *) \n\nlet rec estFonction lc =\n  match lc with\n  | [] -> true\n  | e :: tlc ->\n      (\n        List.for_all\n          (fun c -> (fst c) <> (fst e))\n          tlc\n      )\n      && estFonction tlc\n;;\n\nlet lftest = [(1,3) ; (2,5) ; (3,7) ; (4,9) ; (5,11)] ;;\n  \nestFonction lftest ;;\nestFonction (lftest @ [(2,4)]) ;;\n\n(* --- *)\n\n(* Q.2 *)\n\nlet rec image x rf =\n  match rf with\n  | [] -> failwith \"erreur\"\n  | c :: trf ->\n      if (fst c) = x then (snd c) else image x trf\n;;\n\nimage 1 lftest = 3 ;;\nimage 4 lftest = 9 ;;\n\n(* --- *)\n\n(* Q.3 *)\n\nlet rec imageEns l rf =\n  match l with\n  | [] -> []\n  | e :: tl -> (image e rf) :: (imageEns tl rf)\n;;\n\nimageEns [1; 4] lftest ;;\n\n(* --- *)\n\n(* Q.4 *) \n\nlet estInjective rf =\n  List.for_all\n    (\n      fun c1 ->\n        List.for_all (fun c2 -> fst c1 = fst c2 || snd c1 <> snd c2) rf\n    )\n    rf\n;;\n\nestInjective lftest ;;\nestInjective (lftest @ [(6, 5)]) ;;\n\n(* --- *)\n\n(* Q.5 *) \n\nlet rec surcharge rf1 rf2 =\n  (\n    List.filter\n      (fun c1 -> List.for_all (fun c2 -> fst c2 <> fst c1) rf2)\n      rf1\n  ) @ rf2\n;;\n\nlftest ;;\nlet lftest2 = [(5, 20); (6, 0); (7, -5); (0, 0); (1, 7)] ;;\nsurcharge lftest lftest2  ;;\n\n(* --- *)\n\n(* Q.6 *)\n\nlet isDef x rf = List.exists (fun c -> fst c = x) rf ;;\n\nlet composition rf1 rf2 = \n  map\n    (fun (c_x, c_y) -> (c_x, image c_y rf1))\n    (\n      List.filter\n        (fun (c_x, c_y) -> isDef c_y rf1)\n        rf2\n    )\n;;\n\nlftest ;;\nlftest2 ;;\ncomposition lftest2 lftest ;;\ncomposition lftest lftest2 ;; \n\n(* --- *)\n\n(* Q.7 *) \n\nlet rec extraire_couples_antecedants rf1 rf2 =\n  match rf1 with\n  | [] -> []\n  | rf1 ->\n      (map (fun c -> (fst (List.hd rf1), fst c)) rf2)\n      @ (extraire_couples_antecedants (List.tl rf1) rf2)\n;;\n\nlet rec image_couples_antecedants lc rf1 rf2 =\n  match lc with\n  | [] -> []\n  | xc :: tlc -> \n      let x1 = fst xc and x2 = snd xc in\n      (\n        (x1, x2),\n        (image x1 rf1, image x2 rf2)\n      ) :: (image_couples_antecedants tlc rf1 rf2)\n;;\n\nlet rec produit rf1 rf2 =\n  image_couples_antecedants\n    (extraire_couples_antecedants rf1 rf2)\n    rf1 rf2\n;;\n\n\nproduit lftest lftest2 ;;\n\n(* --- *)",
       "report": [
         {
           "section": [
@@ -11708,7 +11708,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "triInsertion [-1; 1; 1; -2; -5; -1; -2; 4; 4]",
+                      "text": "triInsertion [-4; 1; 2; -2; 3; -3; -1]",
                       "display": "code"
                     }
                   ],
@@ -11720,7 +11720,7 @@
                       "text": "Correct value"
                     },
                     {
-                      "text": "[-5; -2; -2; -1; -1; 1; 1; 4; 4]",
+                      "text": "[-4; -3; -2; -1; 1; 2; 3]",
                       "display": "code"
                     }
                   ],
@@ -11732,7 +11732,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "triInsertion [1; 2; 4; -3; 0; 2; -3; -3; -2]",
+                      "text": "triInsertion [2; -1; -3]",
                       "display": "code"
                     }
                   ],
@@ -11744,7 +11744,7 @@
                       "text": "Correct value"
                     },
                     {
-                      "text": "[-3; -3; -3; -2; 0; 1; 2; 2; 4]",
+                      "text": "[-3; -1; 2]",
                       "display": "code"
                     }
                   ],
@@ -11756,7 +11756,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "triInsertion [0; -1; -1]",
+                      "text": "triInsertion [0]",
                       "display": "code"
                     }
                   ],
@@ -11768,7 +11768,7 @@
                       "text": "Correct value"
                     },
                     {
-                      "text": "[-1; -1; 0]",
+                      "text": "[0]",
                       "display": "code"
                     }
                   ],
@@ -11780,7 +11780,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "triInsertion [0; 1; -2; -3]",
+                      "text": "triInsertion [3]",
                       "display": "code"
                     }
                   ],
@@ -11792,7 +11792,7 @@
                       "text": "Correct value"
                     },
                     {
-                      "text": "[-3; -2; 0; 1]",
+                      "text": "[3]",
                       "display": "code"
                     }
                   ],
@@ -11804,7 +11804,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "triInsertion [1]",
+                      "text": "triInsertion [0; -1; -2; -5; 0; 3; 2; 1; 2; -3]",
                       "display": "code"
                     }
                   ],
@@ -11816,7 +11816,7 @@
                       "text": "Correct value"
                     },
                     {
-                      "text": "[1]",
+                      "text": "[-5; -3; -2; -1; 0; 0; 1; 2; 2; 3]",
                       "display": "code"
                     }
                   ],
@@ -12150,7 +12150,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "partage [true; true; true]",
+                      "text": "partage [true; true; true; false; false; false; true; false; false; false]",
                       "display": "code"
                     }
                   ],
@@ -12162,7 +12162,7 @@
                       "text": "Correct value"
                     },
                     {
-                      "text": "([true; true], [true])",
+                      "text": "([true; true; true; false; false], [false; true; false; false; false])",
                       "display": "code"
                     }
                   ],
@@ -12174,7 +12174,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "partage []",
+                      "text": "partage [false; false; true; true; true; false; false]",
                       "display": "code"
                     }
                   ],
@@ -12186,7 +12186,7 @@
                       "text": "Correct value"
                     },
                     {
-                      "text": "([], [])",
+                      "text": "([false; false; true; true], [true; false; false])",
                       "display": "code"
                     }
                   ],
@@ -12644,7 +12644,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "triFusion ['r'; 'q'; 'n'; 'k'; 'o'; 'f'; 'v'; 'e'; 'y'; 'r']",
+                      "text": "triFusion ['p'; 'g'; 'x']",
                       "display": "code"
                     }
                   ],
@@ -12656,7 +12656,7 @@
                       "text": "Correct value"
                     },
                     {
-                      "text": "['e'; 'f'; 'k'; 'n'; 'o'; 'q'; 'r'; 'r'; 'v'; 'y']",
+                      "text": "['g'; 'p'; 'x']",
                       "display": "code"
                     }
                   ],
@@ -12705,7 +12705,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "fst (2, false)",
+                      "text": "fst (-2, false)",
                       "display": "code"
                     }
                   ],
@@ -12717,7 +12717,7 @@
                       "text": "Correct value"
                     },
                     {
-                      "text": "2",
+                      "text": "(-2)",
                       "display": "code"
                     }
                   ],
@@ -12729,7 +12729,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "fst (-5, true)",
+                      "text": "fst (-4, false)",
                       "display": "code"
                     }
                   ],
@@ -12741,7 +12741,7 @@
                       "text": "Correct value"
                     },
                     {
-                      "text": "(-5)",
+                      "text": "(-4)",
                       "display": "code"
                     }
                   ],
@@ -12768,7 +12768,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "fst (true, -1)",
+                      "text": "fst (true, -2)",
                       "display": "code"
                     }
                   ],
@@ -12844,7 +12844,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "snd (4, false)",
+                      "text": "snd (2, false)",
                       "display": "code"
                     }
                   ],
@@ -12868,7 +12868,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "snd (0, true)",
+                      "text": "snd (3, false)",
                       "display": "code"
                     }
                   ],
@@ -12880,7 +12880,7 @@
                       "text": "Correct value"
                     },
                     {
-                      "text": "true",
+                      "text": "false",
                       "display": "code"
                     }
                   ],
@@ -12907,7 +12907,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "snd (false, -2)",
+                      "text": "snd (false, 2)",
                       "display": "code"
                     }
                   ],
@@ -12919,7 +12919,7 @@
                       "text": "Correct value"
                     },
                     {
-                      "text": "(-2)",
+                      "text": "2",
                       "display": "code"
                     }
                   ],
@@ -12931,7 +12931,7 @@
                       "text": "Computing"
                     },
                     {
-                      "text": "snd (true, -3)",
+                      "text": "snd (false, -4)",
                       "display": "code"
                     }
                   ],
@@ -12943,7 +12943,7 @@
                       "text": "Correct value"
                     },
                     {
-                      "text": "(-3)",
+                      "text": "(-4)",
                       "display": "code"
                     }
                   ],
@@ -14245,7 +14245,7 @@
           ]
         }
       ],
-      "mtime": 1701267766.680217
+      "mtime": 1701268688.639406
     },
     "ilu1-tp5": {
       "grade": 100,

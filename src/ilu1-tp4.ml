@@ -193,16 +193,13 @@ snd ctest ;;
 let rec estFonction lc =
   match lc with
   | [] -> true
-  | lc ->
-      let lc_head = List.hd lc and tail_lc = List.tl lc in
+  | e :: tlc ->
       (
         List.for_all
-          (
-            fun c -> (fst c) <> (fst lc_head)
-          )
-          tail_lc
+          (fun c -> (fst c) <> (fst e))
+          tlc
       )
-      && estFonction tail_lc
+      && estFonction tlc
 ;;
 
 let lftest = [(1,3) ; (2,5) ; (3,7) ; (4,9) ; (5,11)] ;;
@@ -215,11 +212,10 @@ estFonction (lftest @ [(2,4)]) ;;
 (* Q.2 *)
 
 let rec image x rf =
-  match x, rf with
-  | x, [] -> failwith "erreur"
-  | x, rf ->
-      let c = List.hd rf in
-      if (fst c) = x then (snd c) else image x (List.tl rf)
+  match rf with
+  | [] -> failwith "erreur"
+  | c :: trf ->
+      if (fst c) = x then (snd c) else image x trf
 ;;
 
 image 1 lftest = 3 ;;
@@ -230,9 +226,9 @@ image 4 lftest = 9 ;;
 (* Q.3 *)
 
 let rec imageEns l rf =
-  match l, rf with
-  | [], rf -> []
-  | l, rf -> (image (List.hd l) rf) :: (imageEns (List.tl l) rf)
+  match l with
+  | [] -> []
+  | e :: tl -> (image e rf) :: (imageEns tl rf)
 ;;
 
 imageEns [1; 4] lftest ;;
@@ -305,13 +301,12 @@ let rec extraire_couples_antecedants rf1 rf2 =
 let rec image_couples_antecedants lc rf1 rf2 =
   match lc with
   | [] -> []
-  | lc -> 
-      let xc = List.hd lc in
+  | xc :: tlc -> 
       let x1 = fst xc and x2 = snd xc in
       (
         (x1, x2),
         (image x1 rf1, image x2 rf2)
-      ) :: (image_couples_antecedants (List.tl lc) rf1 rf2)
+      ) :: (image_couples_antecedants tlc rf1 rf2)
 ;;
 
 let rec produit rf1 rf2 =
