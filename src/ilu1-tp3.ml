@@ -3,36 +3,69 @@
 
 (* Q.1 *)
 
-let rec premierCh n =
-  match n with
-  | n when n >= 0 -> 
-      let r = toutSaufDer n in
-      if r = 0 then n else premierCh r
+(*
+  let rec premierCh n =
+    match n with
+    | n when n >= 0 -> 
+        let r = toutSaufDer n in
+        if r = 0 then n else premierCh r
           
-  | _ -> failwith "erreur"
+    | _ -> failwith "erreur"
+  ;;
+  *) 
+  
+let rec premierCh n =
+  if n >= 0
+  then 
+    let r = toutSaufDer n in
+    if r = 0 then n else premierCh r 
+  else failwith "erreur"
 ;;
-
-let rec seulementPrem n =
-  match n with
-  | n when n >= 0 -> 
-      let r = toutSaufDer n in
-      if r = 0 then n else (seulementPrem r) * 10
       
-  | _ -> failwith "erreur"
-;; 
+(*
+  let rec seulementPrem n =
+    match n with
+    | n when n >= 0 -> 
+        let r = toutSaufDer n in
+        if r = 0 then n else (seulementPrem r) * 10
 
+    | _ -> failwith "erreur"
+  ;; 
+  *)
+  
+let rec seulementPrem n =
+  if n >= 0
+  then
+    let r = toutSaufDer n in
+    if r = 0 then n else (seulementPrem r) * 10
+  else failwith "erreur"
+;;
+  
 let toutSaufPrem n = n - (seulementPrem n) ;;
+
 
 (* --- *)
 
 (* Q.2 *)
 
+(*
+  let rec estPalindrome n =
+    match n with
+    | n when n < 0 -> estPalindrome (~-n)
+    | 0 -> true
+    | n when dernierCh n <> premierCh n -> false
+    | n -> estPalindrome (toutSaufPrem (toutSaufDer n))
+  ;;
+  *)
+
 let rec estPalindrome n =
-  match n with
-  | n when n < 0 -> estPalindrome (~-n)
-  | 0 -> true
-  | n when dernierCh n <> premierCh n -> false
-  | n -> estPalindrome (toutSaufPrem (toutSaufDer n))
+  if n < 0 then estPalindrome(~-n)
+  else
+    n = 0
+    || (
+      dernierCh n = premierCh n
+      && estPalindrome (toutSaufPrem (toutSaufDer n))
+    )
 ;;
 
 (*
@@ -53,14 +86,25 @@ estPalindrome 127621 ;;
 
 (* Q.3 *)
 
-let rec nbOccs c n =
-  match c, n with
-  | c, n when c >= 0 && c <= 9 && n >= 0 -> 
-      let toutSaufDerN = toutSaufDer n in
-      (if dernierCh n = c then 1 else 0)
-      + (if toutSaufDerN = 0 then 0 else nbOccs c toutSaufDerN)
+(*
+  let rec nbOccs c n =
+    match c, n with
+    | c, n when c >= 0 && c <= 9 && n >= 0 -> 
+        let toutSaufDerN = toutSaufDer n in
+        (if dernierCh n = c then 1 else 0)
+        + (if toutSaufDerN = 0 then 0 else nbOccs c toutSaufDerN)
       
-  | _ -> failwith "erreur"
+    | _ -> failwith "erreur"
+  ;;
+  *)
+
+let rec nbOccs c n =
+  if 0 <= c && c <= 9 && n >= 0
+  then 
+    let toutSaufDerN = toutSaufDer n in
+    (if dernierCh n = c then 1 else 0)
+    + (if toutSaufDerN = 0 then 0 else nbOccs c toutSaufDerN)
+  else failwith "erreur"
 ;;
 
 (*
@@ -138,10 +182,16 @@ itererBis (fun x -> x / 2) (fun x -> x < 10) 45  =  5  ;;
 
 (* Q.1 *)
 
-let rec qqsoit n p = 
-  match n, p with
-  | n, p when n <= 0 -> true
-  | n, p -> (p n) && (qqsoit (n-1) p)
+(*
+  let rec qqsoit n p = 
+    match n, p with
+    | n, p when n <= 0 -> true
+    | n, p -> (p n) && (qqsoit (n-1) p)
+  ;;
+  *)
+
+let rec qqsoit n p =
+  n <= 0 || (p n) && (qqsoit (n-1) p)
 ;;
 
 (* --- *)
@@ -150,16 +200,29 @@ let rec qqsoit n p =
 
 let pair n = n - ((n lsr 1) lsl 1) = 0 ;;
 
+(*
+  let rec fastpow n e =
+    if e < 0
+    then failwith "erreur" 
+    else
+      match n, e with
+      | n, 0 -> 1
+      | n, 1 -> n
+      | n, e when pair e -> fastpow (n * n) (e lsr 1)
+      | n, e when not (pair e) -> n * (fastpow (n * n) ((e-1) lsr 1))
+      | _, _ -> failwith "erreur"
+  ;;
+  *)
+
 let rec fastpow n e =
-  if e < 0
-  then failwith "erreur" 
+  if e < 0 then failwith "erreur"
   else
-    match n, e with
-    | n, e when e = 0 -> 1
-    | n, e when e = 1 -> n
-    | n, e when pair e -> fastpow (n * n) (e lsr 1)
-    | n, e when not (pair e) -> n * (fastpow (n * n) ((e-1) lsr 1))
-    | _, _ -> failwith "erreur"
+    match e with
+    | 0 -> 1
+    | 1 -> n
+    | _ ->
+        if pair e then fastpow (n * n) (e lsr 1)
+        else n * (fastpow (n * n) ((e-1) lsr 1))
 ;;
 
 fastpow 0 0 ;;
@@ -175,12 +238,21 @@ r1 = r2 ;;
 
 (* Q.3 *)
 
+(*
+  let rec ack (m, n) =
+    match m, n with
+    | 0, n -> n + 1
+    | m, n when m > 0 && n = 0 -> ack (m-1, 1)
+    | m, n when m > 0 && n > 0 -> ack (m-1, ack (m, (n-1)) )
+    | _, _ -> failwith "erreur"
+  ;;
+  *)
+
 let rec ack (m, n) =
-  match m, n with
-  | m, n when m = 0 -> n + 1
-  | m, n when m > 0 && n = 0 -> ack (m-1, 1)
-  | m, n when m > 0 && n > 0 -> ack (m-1, ack (m, (n-1)) )
-  | _, _ -> failwith "erreur"
+  if m < 0 || n < 0 then failwith "erreur"
+  else if m = 0 then n + 1
+  else if n = 0 then ack (m-1, 1)
+  else ack (m-1, ack (m, (n-1)) )
 ;;
 
 (*

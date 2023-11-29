@@ -1,0 +1,131 @@
+<link rel="stylesheet" type="text/css" href="css/learnocaml_common.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_tryocaml.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_exercise.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_report.css">
+<link rel="stylesheet" type="text/css" href="css/learnocaml_standalone_description.css">
+
+<br>
+
+<!--  -->
+
+<h1 id="TP5-ILU1">TP5 (ILU1)</h1>
+<h2 id="1-Pr-paration-du-CC4-combinant-Java-OCaml-dans-un-seul-et-m-me-projet">§ 1. Préparation du CC4 combinant Java/OCaml dans un seul et même projet</h2>
+<p>Pour le CC4 ILU1, vous aurez besoin d&#39;installer et d&#39;utiliser OCaml <strong>en dehors de la plateforme PFITAXEL/Learn-OCaml</strong>. </p>
+<p>Ce paragraphe regroupe tous les liens vers les tutoriels nécessaires pour réaliser cette installation (environnement de développement basé sur «Emacs+Tuareg+Merlin»), puis vous familiariser à cet IDE que vous pourrez continuer à utiliser dans l&#39;UE ILU3, puis plus tard si vous le souhaitez.</p>
+<h3 id="1-1-Installation-Si-vous-tes-sur-les-machines-de-TP-de-l-39-UPS">§ 1.1. Installation Si vous êtes sur les machines de TP de l&#39;UPS</h3>
+<p>Après avoir démarré sous Linux, ouvrir un terminal et exécuter :</p>
+<pre>
+	<code>cd ~/ &amp;&amp; curl -fOL https://github.com/erikmd/tapfa-init.el/raw/master/.emacs
+
+emacs &amp;</code>
+</pre>
+<ul>
+  <li>
+    <p>À la question <em>Voulez-vous installer les modes (plugins) associés au langage Coq ?</em>, dire <em>Non</em>. </p>
+  </li>
+  <li>
+    <p>À la question <em>Voulez-vous forcer l&#39;utilisation des raccourcis Windows ?</em>, vous pouvez dire Oui ( <em>Windows</em>) par simplicité. </p>
+  </li>
+</ul>
+<p>Attendre quelques minutes pour que les plugins Emacs pour OCaml soient compilés.</p>
+<p>Passer au paragraphe <strong>1.3</strong>. </p>
+<h3 id="1-2-Installation-Si-vous-avez-un-PC-sous-GNU-Linux-macOS-ou-Windows">§ 1.2. Installation Si vous avez un PC sous GNU/Linux, macOS ou Windows</h3>
+<p>Suivre les indications du tuto <strong>
+    <a href="https://github.com/erikmd/tapfa-init.el#readme" target="_blank" rel="noopener noreferrer">https://github.com/erikmd/tapfa-init.el</a>
+  </strong>
+</p>
+<p>En cas de question, ne pas hésiter à poster un message sur Moodle, ou à écrire à l&#39;enseignant qui maintient le tutoriel ( <em>erik.martin-dorel@irit.fr</em>) </p>
+<h3 id="1-3-Ressources-suppl-mentaires">§ 1.3. Ressources supplémentaires</h3>
+<p>Après avoir lancé <code>emacs</code>, prenez connaissance des principaux raccourcis mentionnés dans la <strong>carte de référence <a href="https://moodle.univ-tlse3.fr/mod/resource/view.php?id=394984" target="_blank" rel="noopener noreferrer">emacs+tuareg-refcard-1.9.pdf</a> disponible sur Moodle </strong> (et testez-en quelques-uns). </p>
+<ul>
+  <li>
+    <p>Les raccourcis les plus utiles sont signalés par une astérisque bleue.</p>
+  </li>
+  <li>
+    <p>Ceux vraiment indispensables sont :</p>
+  </li>
+</ul>
+<pre>
+	<code>C-g    c.-à-d.   Ctrl+g
+  pour annuler une saisie en cours dans le minibuffer (= barre d&#39;état)
+  
+ESC ESC ESC
+  pour annuler plus violemment (signal d&#39;échappement, plus puissant que C-g)
+
+C-x C-f  ~/test.ml  RET (= la touche Entrée)
+  pour ouvrir un fichier nommé test.ml dans votre dossier personnel
+
+C-x C-s
+  pour sauver le fichier courant (et vérifier qu&#39;il n&#39;a pas d&#39;erreur OCaml)
+
+C-x 2
+  pour découper la vue courante en 2 zones (en une &quot;mosaïque horizontale&quot;)
+
+C-x o
+  pour déplacer le curseur d&#39;une zone à l&#39;autre
+
+C-x 1
+  pour maximiser le buffer courant (et masquer les autres zones affichées)
+
+C-c C-s RET
+  pour lancer un toplevel OCaml
+
+C-c C-e
+  pour évaluer toute la phrase OCaml sur laquelle le curseur se trouve
+
+C-c C-b
+  pour évaluer tout le buffer dans le toplevel OCaml
+
+C-c C-t
+  pour afficher dans le minibuffer le type OCaml du code sélectionné
+
+C-c C-l
+  pour localiser et sauter à la définition de l&#39;identificateur courant
+
+C-c &amp;
+  pour revenir à la dernière position avant d&#39;avoir fait C-c C-l
+
+C-c C-o  …  (puis C-g pour terminer l&#39;action)
+  pour renommer toutes les occurrences de l&#39;identificateur courant</code>
+</pre>
+<p>Enfin, lorsque vous serez en TP non encadré ILU1 (préparation du projet CC4), les deux projets github.com mentionnés dans le PDF <a href="https://moodle.univ-tlse3.fr/mod/resource/view.php?id=386452" target="_blank" rel="noopener noreferrer">Cadrage du projet</a> sur <a href="https://moodle.univ-tlse3.fr/course/view.php?id=6128&amp;section=24#tabs-tree-start" target="_blank" rel="noopener noreferrer">Moodle</a> vous seront utiles pour mieux appréhender la communication Java/OCaml. </p>
+<p>Pour l&#39;instant, nous visons dans cette séance de TP5 OCaml de ne pas effectuer de communication entre des programmes Java et OCaml, mais simplement <em>d&#39;alimenter votre code OCaml</em> (possiblement codé dans PFITAXEL/Learn-OCaml) <em>avec la sortie textuelle générée par le TP Java</em>. </p>
+<h2 id="2-Exercice-de-r-vision-OCaml-faisant-suite-au-TP-Java">§ 2. Exercice de révision OCaml faisant suite au TP Java</h2>
+<p>Les trois fonctions suivantes font suite au TP Java construisant la liste des objets déposés au musée. La sortie attendue du programme Java est de la forme:</p>
+<pre>
+	<code>let musee = [
+    &quot;Astérix&quot;, &quot;bouclier&quot;;
+    &quot;Astérix&quot;, &quot;casque&quot;;
+    &quot;Astérix&quot;, &quot;bouclier&quot;;
+    &quot;Astérix&quot;, &quot;casque&quot;;
+    &quot;Astérix&quot;, &quot;casque&quot;;
+    &quot;Obélix&quot;, &quot;bouclier&quot;;
+    &quot;Obélix&quot;, &quot;casque&quot;
+]</code>
+</pre>
+<p>On souhaite mettre la liste en forme et obtenir (à l&#39;ordre près) pour cet exemple:</p>
+<pre>
+	<code>[ &quot;Asterix&quot;, [3,&quot;casque&quot;; 2,&quot;bouclier&quot;];
+  &quot;Obelix&quot;,  [1,&quot;casque&quot;; 1,&quot;bouclier&quot;] ]</code>
+</pre>
+<p>Ce résultat sera fourni par la fonction decompte. On commence par définir des fonctions auxiliaires.</p>
+<p>
+  <strong>1.</strong> Définir la fonction <code>insertObj : &#39;a -&gt; (int * &#39;a) list -&gt; (int * &#39;a) list</code> prenant en argument un élément o et une liste de couples (nombre d&#39;occurrences, élement) qui renvoie cette liste où le nombre d&#39;occurrences de o a été incrémenté si o est présent; sinon le couple (1,o) est ajouté. On suppose qu&#39;un élément n&#39;est présent qu&#39;une fois dans la liste.
+</p>
+<p>
+  <strong>2.</strong> Définir la fonction <code>insert: &#39;a -&gt; &#39;b -&gt; (&#39;a * (int * &#39;b) list) list -&gt; (&#39;a * (int * &#39;b) list) list</code> prenant en argument un index p, un élément o et une liste de couples (index, liste de couples (occurrence, objet)) et renvoyant une telle liste où l&#39;objet o aura été ajouté à la liste de couples associée à l&#39;index p s&#39;il est trouvé; autrement (p, [1,o]) sera ajouté à la liste. Un index est supposé n&#39;apparaître qu&#39;une seule fois dans la liste.
+</p>
+<p>
+  <strong>3.</strong> Définir la fonction <code>decompte : (&#39;a * &#39;b) list -&gt; (&#39;a * (int * &#39;b) list) list</code> prenant en argument une liste de couples (index, objet) et renvoyant les mêmes informations sous forme d&#39;une liste de couples (index, liste de couples (nb occurrences, objet)) où un index n&#39;apparaît qu&#39;une fois et pour chaque index, un objet n&#39;apparaît qu&#39;une fois.
+</p>
+<p>Tester votre fonction <code>decompte</code> sur le musée exporté depuis Java. </p>
+<p>
+  <strong>4.</strong> Définir la fonction <code>longueur : (int * &#39;a) list -&gt; int</code> prenant en argument une liste de couples (nombre d&#39;occurrences, valeur) et renvoyant la somme des nombres d&#39;occurrence.
+</p>
+<p>
+  <strong>5.</strong> Définir la fonction <code>aumoins_indexed : int -&gt; (&#39;a * (int * &#39;b) list) list -&gt; &#39;a list</code> prenant en argument un entier n et une liste de couples (index, liste de couples (nb occurrences, objet)) et renvoyant la liste des index dont le nombre de valeurs associées (en prenant en compte la somme des nombres d&#39;occurrences) est <code>&gt;= n</code>.
+</p>
+<p>
+  <strong>6.</strong> En utilisant <code>aumoins_indexed</code> et <code>decompte</code>, définir fonction <code>aumoins : int -&gt; (&#39;a * &#39;b) list -&gt; &#39;a list</code> prenant en argument un entier n et une liste de couples (index, valeur) et renvoyant la liste des index dont le nombre de valeurs associées est <code>&gt;= n</code>.
+</p>
+<p>Déterminer la liste des gaulois ayant apporté au moins 2 trophées.</p>

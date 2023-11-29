@@ -164,17 +164,24 @@ let bissextile a = a mod 400 = 0 || ( a mod 100 <> 0 && a mod 4 = 0 ) ;;
 
 (* Q.7 *)
 
-exception NBJOUR_INVALID_MONTH ;;
+(*
+  let nbjour m a =
+    match m, a with
+    | m, a when m = 1 -> 31
+    | m, a when m = 2 -> 28 + (if bissextile a then 1 else 0)
+    | m, a when m > 2 && m < 8 -> 30 + ((m) mod 2)
+    | m, a when m > 7 && m < 13 -> 30 + ((m+1) mod 2)
+    | _, _ -> failwith "erreur"
+  ;;
+  *)
 
 let nbjour m a =
-  match m, a with
-  | m, a when m = 1 -> 31
-  | m, a when m = 2 -> 28 + (if bissextile a then 1 else 0)
-  | m, a when m > 2 && m < 8 -> 30 + ((m) mod 2)
-  | m, a when m > 7 && m < 13 -> 30 + ((m+1) mod 2)
-  | _, _ -> failwith "erreur"
-;;
-
+  match m with
+  | 2 -> 28 + (if bissextile a then 1 else 0)
+  | 1 | 3 | 5 | 7 | 8 | 10 | 12 -> 31
+  | 4 | 6 | 9 | 11 -> 30
+  | _ -> failwith "erreur"
+  
 (* nbjour 1 2020 ;; *)
 (* nbjour 2 1900 ;; *)
 (* nbjour 2 2020 ;; *)
